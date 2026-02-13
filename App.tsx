@@ -30,6 +30,13 @@ const App: React.FC = () => {
   const [lightboxOpen, setLightboxOpen] = useState(false);
   const [lightboxIndex, setLightboxIndex] = useState(0);
   const [lightboxImages, setLightboxImages] = useState<{ url: string; caption: string }[]>([]);
+  const [menuOpen, setMenuOpen] = useState(false);
+
+  const handleNavClick = (view: View) => {
+    setActiveView(view);
+    setMenuOpen(false);
+    window.scrollTo({ top: 0, behavior: 'smooth' });
+  };
 
   const openLightbox = (images: { url: string; caption: string }[], index: number) => {
     setLightboxImages(images);
@@ -325,17 +332,18 @@ const App: React.FC = () => {
   return (
     <div className="layout-container flex h-full grow flex-col">
       {/* Header */}
-      <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 px-6 md:px-20 py-6 bg-background-light/80 backdrop-blur-md sticky top-0 z-50">
-        <div className="flex items-center gap-3 text-primary cursor-pointer" onClick={() => setActiveView(View.HOME)}>
+      <header className="flex items-center justify-between whitespace-nowrap border-b border-solid border-primary/10 px-6 md:px-20 py-4 bg-background-light/80 dark:bg-background-dark/80 backdrop-blur-md sticky top-0 z-50">
+        <div className="flex items-center gap-3 text-primary cursor-pointer" onClick={() => handleNavClick(View.HOME)}>
           <span className="material-symbols-outlined text-3xl">favorite</span>
           <h1 className="text-2xl font-bold italic tracking-tight font-display">Ang KwinTuh</h1>
         </div>
+        {/* Desktop Nav */}
         <nav className="hidden md:flex items-center gap-10">
           {Object.values(View).map((view) => (
             <button
               key={view}
-              onClick={() => setActiveView(view)}
-              className={`text-sm font-medium transition-colors ${activeView === view ? 'text-primary' : 'hover:text-primary'}`}
+              onClick={() => handleNavClick(view)}
+              className={`text-sm font-medium transition-colors ${activeView === view ? 'text-primary border-b-2 border-primary pb-1' : 'hover:text-primary'}`}
             >
               {view}
             </button>
@@ -348,8 +356,40 @@ const App: React.FC = () => {
               style={{ backgroundImage: `url("${HERO_IMAGE}")` }}
             ></div>
           </div>
+          {/* Hamburger Button (Mobile) */}
+          <button
+            className="md:hidden flex flex-col gap-1.5 p-2 rounded-lg hover:bg-primary/10 transition-colors"
+            onClick={() => setMenuOpen(!menuOpen)}
+            aria-label="Toggle menu"
+          >
+            <span className={`block w-6 h-0.5 bg-primary rounded transition-all duration-300 ${menuOpen ? 'rotate-45 translate-y-2' : ''}`}></span>
+            <span className={`block w-6 h-0.5 bg-primary rounded transition-all duration-300 ${menuOpen ? 'opacity-0' : ''}`}></span>
+            <span className={`block w-6 h-0.5 bg-primary rounded transition-all duration-300 ${menuOpen ? '-rotate-45 -translate-y-2' : ''}`}></span>
+          </button>
         </div>
       </header>
+
+      {/* Mobile Menu Overlay */}
+      {menuOpen && (
+        <div className="md:hidden fixed inset-0 top-[73px] z-40 bg-background-light/95 dark:bg-background-dark/95 backdrop-blur-xl">
+          <nav className="flex flex-col items-center justify-center gap-8 pt-20">
+            {Object.values(View).map((view) => (
+              <button
+                key={view}
+                onClick={() => handleNavClick(view)}
+                className={`text-2xl font-display italic font-bold transition-all duration-300 ${activeView === view ? 'text-primary scale-110' : 'text-gray-500 hover:text-primary hover:scale-105'}`}
+              >
+                {view}
+              </button>
+            ))}
+          </nav>
+          <div className="flex justify-center gap-4 mt-16 text-primary/30">
+            <span className="material-symbols-outlined">favorite</span>
+            <span className="material-symbols-outlined">favorite</span>
+            <span className="material-symbols-outlined">favorite</span>
+          </div>
+        </div>
+      )}
 
       {/* Main Content */}
       <main className="max-w-6xl mx-auto px-6 py-12 flex-grow w-full">
