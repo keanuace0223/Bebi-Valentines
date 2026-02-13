@@ -1,3 +1,10 @@
+# Your Site Link 🔗
+**[https://keanuace0223.github.io/Bebi-Valentines/](https://keanuace0223.github.io/Bebi-Valentines/)**
+
+(Note: It may take 1-2 minutes to appear after the "pages build and deployment" workflow finishes).
+
+---
+
 # Deployment Instructions
 
 I've configured the project for deployment to GitHub Pages.
@@ -48,3 +55,12 @@ This confirms that the **Workflow permissions** are not set correctly or were no
 - [x] Initial Push (Failed due to permissions)
 - [x] Permissions Fixed (Pending verification)
 - [x] Retrying deployment... (Check Actions tab now!)
+
+## Troubleshooting: Site Not Visible?
+If the workflow finished successfully but the link is 404 or missing:
+1.  Go to **Settings** > **Pages**.
+2.  Ensure **Build and deployment > Source** is set to **Deploy from a branch**.
+3.  Ensure **Branch** is set to `gh-pages` and folder to `/(root)`.
+4.  Click **Save**.
+
+The live URL will appear at the top of that page once it's ready!
