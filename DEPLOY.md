@@ -11,6 +11,14 @@ The deployment failed because GitHub Actions doesn't have permission to write to
 4.  Select **Read and write permissions**.
 5.  Click **Save**.
 
+## Troubleshooting
+### Error: process '/usr/bin/git' failed with exit code 128
+This confirms that the **Workflow permissions** are not set correctly or were not saved.
+1.  Go to **Settings** > **Actions** > **General**.
+2.  Under **Workflow permissions**, ensure **Read and write permissions** is checked.
+3.  **Click Save**.
+4.  Then go to the **Actions** tab, click the failed workflow run, and click **Re-run jobs**.
+
 ## Steps to Deploy
 
 1.  **Verify Remote URL**
@@ -35,3 +43,8 @@ The deployment failed because GitHub Actions doesn't have permission to write to
 4.  **View Site**
     Once deployment finishes, your site will be live at:
     `https://keanuace0223.github.io/Bebi-Valentines/`
+
+## Deployment Status
+- [x] Initial Push (Failed due to permissions)
+- [x] Permissions Fixed (Pending verification)
+- [x] Retrying deployment... (Check Actions tab now!)
