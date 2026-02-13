@@ -19,7 +19,7 @@ export const generateLoveLetter = async (prompt: string): Promise<string> => {
         temperature: 0.9,
       }
     });
-    return response.text() || "Love is the greatest thing of all...";
+    return response.text || "Love is the greatest thing of all...";
   } catch (error) {
     console.error("Gemini Error:", error);
     return "The stars shine brighter when we're together. I love you.";
