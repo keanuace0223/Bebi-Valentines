@@ -24,13 +24,37 @@ const MusicPlayer: React.FC<MusicPlayerProps> = ({ src, title, artist, coverPara
                 try {
                     await audioRef.current.play();
                     setIsPlaying(true);
+                    return true;
                 } catch (error) {
-                    console.log("Autoplay blocked:", error);
+                    console.log("Autoplay blocked, waiting for user interaction...");
                     setIsPlaying(false);
+                    return false;
                 }
             }
+            return false;
         };
-        attemptPlay();
+
+        // Try autoplay immediately
+        attemptPlay().then((success) => {
+            if (!success) {
+                // If autoplay blocked, play on first user interaction
+                const playOnInteraction = () => {
+                    if (audioRef.current && audioRef.current.paused) {
+                        audioRef.current.volume = volume;
+                        audioRef.current.play().then(() => {
+                            setIsPlaying(true);
+                        }).catch(() => { });
+                    }
+                    // Remove listeners after first interaction
+                    document.removeEventListener('click', playOnInteraction);
+                    document.removeEventListener('touchstart', playOnInteraction);
+                    document.removeEventListener('scroll', playOnInteraction);
+                };
+                document.addEventListener('click', playOnInteraction, { once: true });
+                document.addEventListener('touchstart', playOnInteraction, { once: true });
+                document.addEventListener('scroll', playOnInteraction, { once: true });
+            }
+        });
     }, []); // Run once on mount
 
     useEffect(() => {
